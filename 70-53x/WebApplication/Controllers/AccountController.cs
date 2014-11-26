@@ -12,7 +12,7 @@ namespace WebApplication.Controllers
             WsFederationConfiguration config = FederatedAuthentication.FederationConfiguration.WsFederationConfiguration;
 
             // Redirect to SignOutCallback after signing out.
-            string callbackUrl = Url.Action("SignOutCallback", "Account", null, Request.Url?.Scheme);
+            string callbackUrl = Url.Action("SignOutCallback", "Account", null, Request.Url == null ? "https" : Request.Url.Scheme);
             SignOutRequestMessage signoutMessage = new SignOutRequestMessage(new Uri(config.Issuer), callbackUrl);
             signoutMessage.SetParameter("wtrealm", IdentityConfig.Realm ?? config.Realm);
             FederatedAuthentication.SessionAuthenticationModule.SignOut();
