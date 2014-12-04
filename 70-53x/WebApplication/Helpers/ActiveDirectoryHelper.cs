@@ -23,17 +23,17 @@ namespace WebApplication.Helpers
         /// <summary>
         /// The client id.
         /// </summary>
-        private static readonly string ClientId = ConfigurationManager.AppSettings["ida:ClientId"];
+        private static readonly string ClientId = ConfigurationManager.AppSettings["ClientId"];
 
         /// <summary>
         /// The client secret.
         /// </summary>
-        private static readonly string ClientSecret = ConfigurationManager.AppSettings["ida:ClientSecret"];
+        private static readonly string ClientSecret = ConfigurationManager.AppSettings["ClientSecret"];
 
         /// <summary>
         /// The tenant id.
         /// </summary>
-        private static readonly string TenantId = ConfigurationManager.AppSettings["ida:TenantId"];
+        private static readonly string TenantId = ConfigurationManager.AppSettings["TenantId"];
 
         /// <summary>
         /// The graph API base endpoint.

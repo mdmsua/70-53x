@@ -11,6 +11,7 @@ namespace WebApplication.Security.Claims
     using Microsoft.Azure.ActiveDirectory.GraphClient;
 
     using WebApplication.Helpers;
+    using WebApplication.Tracing;
 
     /// <summary>
     /// The custom claims authentication manager.
@@ -39,7 +40,7 @@ namespace WebApplication.Security.Claims
         public override ClaimsPrincipal Authenticate(string resourceName, ClaimsPrincipal incomingPrincipal)
         {
             const string ObjectIdClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
-            if (incomingPrincipal != null && incomingPrincipal.Identity.IsAuthenticated)
+            if (incomingPrincipal.Identity.IsAuthenticated)
             {
                 var claimsIdentity = (ClaimsIdentity)incomingPrincipal.Identity;
                 var client = this.activeDirectoryHelper.ActiveDirectoryClient;
@@ -48,7 +49,9 @@ namespace WebApplication.Security.Claims
                         .Expand(x => x.MemberOf)
                         .ExecuteSingleAsync()
                         .Result;
+                ApplicationEventSource.EventSource.Logon(user.UserPrincipalName);
                 claimsIdentity.AddClaim(new Claim(claimsIdentity.NameClaimType, user.DisplayName));
+                claimsIdentity.AddClaim(new Claim(ClaimTypes.Upn, user.UserPrincipalName));
                 foreach (var directoryObject in user.MemberOf.CurrentPage.OfType<IDirectoryRole>())
                 {
                     var directoryRole = directoryObject;
