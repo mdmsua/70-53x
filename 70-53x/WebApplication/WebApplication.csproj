@@ -216,7 +216,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Start\Startup.Bundles.cs" />
-    <Compile Include="Start\Startup.Routes.cs" />
+    <Compile Include="Start\Startup.Routes.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Start\Startup.Security.cs" />
     <Compile Include="Start\Startup.Trace.cs" />
     <Compile Include="Start\Startup.cs" />
