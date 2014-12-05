@@ -58,7 +58,7 @@ namespace WebApplication.Tracing
         /// <param name="account">
         /// The account.
         /// </param>
-        [Event(2, Level = EventLevel.Informational, Message = "{0} was logged off.")]
+        [Event(2, Level = EventLevel.Informational, Message = "{0} was logged off.", Task = Task.Audit)]
         public void Logoff(string account)
         {
             if (this.IsEnabled())
@@ -73,7 +73,7 @@ namespace WebApplication.Tracing
         /// <param name="account">
         /// The account.
         /// </param>
-        [Event(1, Level = EventLevel.Informational, Message = "{0} was logged on.")]
+        [Event(1, Level = EventLevel.Informational, Message = "{0} was logged on.", Task = Task.Audit)]
         public void Logon(string account)
         {
             if (this.IsEnabled())
