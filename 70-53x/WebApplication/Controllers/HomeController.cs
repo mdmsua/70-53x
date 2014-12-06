@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
         /// </returns>
         public ActionResult Index()
         {
-            return this.View(); // [Authorize(Roles = "Company Administrator, User Account Administrator")]
+            return this.View();
         }
 
         #endregion

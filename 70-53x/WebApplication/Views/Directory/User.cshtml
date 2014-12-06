@@ -1,0 +1,77 @@
+﻿@using System.Linq
+@using Microsoft.Azure.ActiveDirectory.GraphClient
+@model User
+@{
+    ViewBag.Title = Model.DisplayName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header class="page-header">
+    <h1>
+        @Model.DisplayName&nbsp;
+        @if (Model.AccountEnabled.HasValue && Model.AccountEnabled.Value)
+        {
+            <span class="label label-success">Account enabled</span>
+        }
+        else
+        {
+            <span class="label label-danger">Account disabled</span>
+        }
+    </h1>
+</header>
+
+<header class="page-header">
+    <h3>Identity</h3>
+</header>
+<dl class="dl-horizontal">
+    <dt>Given name</dt>
+    <dd>@Model.GivenName</dd>
+    <dt>Surname</dt>
+    <dd>@Model.Surname</dd>
+    <dt>Display name</dt>
+    <dd>@Model.DisplayName</dd>
+    <dt>User principal name</dt>
+    <dd>@Model.UserPrincipalName</dd>
+</dl>
+
+<header class="page-header">
+    <h3>Role</h3>
+</header>
+<ul class="list-inline">
+    @foreach (var role in Model.MemberOf.OfType<IDirectoryRole>())
+    {
+        <li>@role.DisplayName</li>
+    }
+</ul>
+
+<header class="page-header">
+    <h3>Work</h3>
+</header>
+<dl class="dl-horizontal">
+    <dt>Job title</dt>
+    <dd>@Model.JobTitle</dd>
+    <dt>Department</dt>
+    <dd>@Model.Department</dd>
+    <dt>Telephone number</dt>
+    <dd>@Model.TelephoneNumber</dd>
+</dl>
+
+<header class="page-header">
+    <h3>Contact</h3>
+</header>
+<dl class="dl-horizontal">
+    <dt>Mobile</dt>
+    <dd>@Model.Mobile</dd>
+    <dt>Facsimile telephone number</dt>
+    <dd>@Model.FacsimileTelephoneNumber</dd>
+    <dt>Street address</dt>
+    <dd>@Model.StreetAddress</dd>
+    <dt>City</dt>
+    <dd>@Model.City</dd>
+    <dt>State</dt>
+    <dd>@Model.State</dd>
+    <dt>Postal code</dt>
+    <dd>@Model.PostalCode</dd>
+    <dt>Country</dt>
+    <dd>@Model.Country</dd>
+</dl>

@@ -22,7 +22,7 @@ namespace WebApplication
         /// <summary>
         /// Configures trace.
         /// </summary>
-        public static void ConfigureTrace()
+        private static void ConfigureTrace()
         {
             var listener = new ObservableEventListener();
             listener.LogToWindowsAzureTable(

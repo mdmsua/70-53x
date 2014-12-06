@@ -6,7 +6,9 @@
 namespace WebApplication
 {
     using System.Configuration;
+    using System.IdentityModel.Claims;
     using System.IdentityModel.Tokens;
+    using System.Web.Helpers;
 
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.ActiveDirectory;
@@ -50,6 +52,8 @@ namespace WebApplication
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseWindowsAzureActiveDirectoryBearerAuthentication(authenticationOptions);
+
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Upn;
         }
 
         #endregion

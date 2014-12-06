@@ -1,7 +1,4 @@
 <StyleCopSettings Version="105">
-  <GlobalSettings>
-    <IntegerProperty Name="DaysToCheckForUpdates">1</IntegerProperty>
-  </GlobalSettings>
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
       <AnalyzerSettings>

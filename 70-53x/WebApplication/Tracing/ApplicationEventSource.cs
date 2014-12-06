@@ -55,30 +55,81 @@ namespace WebApplication.Tracing
         /// <summary>
         /// The logoff event.
         /// </summary>
-        /// <param name="account">
-        /// The account.
+        /// <param name="upn">
+        /// The user principal name.
         /// </param>
-        [Event(2, Level = EventLevel.Informational, Message = "{0} was logged off.", Task = Task.Audit)]
-        public void Logoff(string account)
+        [Event(2, Level = EventLevel.Informational, Message = "{0} was logged off.", Task = Tasks.Audit)]
+        public void Logoff(string upn)
         {
             if (this.IsEnabled())
             {
-                this.WriteEvent(2, account);
+                this.WriteEvent(2, upn);
             }
         }
 
         /// <summary>
         /// The logon event.
         /// </summary>
-        /// <param name="account">
-        /// The account.
+        /// <param name="upn">
+        /// The user principal name.
         /// </param>
-        [Event(1, Level = EventLevel.Informational, Message = "{0} was logged on.", Task = Task.Audit)]
-        public void Logon(string account)
+        [Event(1, Level = EventLevel.Informational, Message = "{0} was logged on.", Task = Tasks.Audit)]
+        public void Logon(string upn)
         {
             if (this.IsEnabled())
             {
-                this.WriteEvent(1, account);
+                this.WriteEvent(1, upn);
+            }
+        }
+
+        /// <summary>
+        /// The sync directory event.
+        /// </summary>
+        /// <param name="upn">
+        /// The user principal name.
+        /// </param>
+        [Event(10, Level = EventLevel.Informational, Message = "{0} queued the directory synchronization", Task = Tasks.Sync)]
+        public void SyncDirectory(string upn)
+        {
+            if (this.IsEnabled())
+            {
+                this.WriteEvent(10, upn);
+            }
+        }
+
+        /// <summary>
+        /// The sync user event.
+        /// </summary>
+        /// <param name="displayName">
+        /// The user display name.
+        /// </param>
+        /// <param name="upn">
+        /// The user principal name.
+        /// </param>
+        [Event(11, Level = EventLevel.Verbose, Message = "Synchronizing {0} ({1})", Task = Tasks.Sync)]
+        public void SyncUser(string displayName, string upn)
+        {
+            if (this.IsEnabled())
+            {
+                this.WriteEvent(11, displayName, upn);
+            }
+        }
+
+        /// <summary>
+        /// The sync user done event.
+        /// </summary>
+        /// <param name="displayName">
+        /// The user display name.
+        /// </param>
+        /// <param name="upn">
+        /// The user principal name.
+        /// </param>
+        [Event(12, Level = EventLevel.Verbose, Message = "Synchronizing {0} ({1}) completed", Task = Tasks.Sync)]
+        public void SyncUserDone(string displayName, string upn)
+        {
+            if (this.IsEnabled())
+            {
+                this.WriteEvent(12, displayName, upn);
             }
         }
 

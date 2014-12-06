@@ -14,47 +14,70 @@ namespace WebApplication.Helpers
     using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
     /// <summary>
-    /// The active directory helper.
+    ///     The active directory helper.
     /// </summary>
     public class ActiveDirectoryHelper
     {
         #region Static Fields
 
         /// <summary>
-        /// The client id.
-        /// </summary>
-        private static readonly string ClientId = ConfigurationManager.AppSettings["ClientId"];
-
-        /// <summary>
-        /// The client secret.
-        /// </summary>
-        private static readonly string ClientSecret = ConfigurationManager.AppSettings["ClientSecret"];
-
-        /// <summary>
-        /// The tenant id.
-        /// </summary>
-        private static readonly string TenantId = ConfigurationManager.AppSettings["TenantId"];
-
-        /// <summary>
-        /// The graph API base endpoint.
+        ///     The graph API base endpoint.
         /// </summary>
         private static readonly Uri GraphUri = new Uri("https://graph.windows.net/");
 
         /// <summary>
-        /// The login endpoint.
+        ///     The login endpoint.
         /// </summary>
         private static readonly Uri LoginUri = new Uri("https://login.windows.net/");
 
-        /// <summary>
-        /// The graph API endpoint (e.g. https://graph.windows.net/{tenant}/).
-        /// </summary>
-        private static readonly Uri GraphApiEndpoint = new Uri(GraphUri, TenantId);
+        #endregion
+
+        #region Fields
 
         /// <summary>
-        /// The federation sign-on endpoint (e.g. https://graph.windows.net/{tenant}/wsfed/).
+        ///     The client id.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-        private static readonly Uri WsFederationSignOn = new Uri(LoginUri, string.Join("/", TenantId, "wsfed"));
+        private readonly string clientId = ConfigurationManager.AppSettings["ClientId"];
+
+        /// <summary>
+        ///     The client secret.
+        /// </summary>
+        private readonly string clientSecret = ConfigurationManager.AppSettings["ClientSecret"];
+
+        /// <summary>
+        ///     The tenant id.
+        /// </summary>
+        private readonly string tenantId = ConfigurationManager.AppSettings["TenantId"];
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActiveDirectoryHelper"/> class.
+        /// </summary>
+        public ActiveDirectoryHelper()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActiveDirectoryHelper"/> class.
+        /// </summary>
+        /// <param name="tenantId">
+        /// The tenant id.
+        /// </param>
+        /// <param name="clientId">
+        /// The client id.
+        /// </param>
+        /// <param name="clientSecret">
+        /// The client secret.
+        /// </param>
+        public ActiveDirectoryHelper(string tenantId, string clientId, string clientSecret)
+        {
+            this.tenantId = tenantId;
+            this.clientId = clientId;
+            this.clientSecret = clientSecret;
+        }
 
         #endregion
 
@@ -67,7 +90,35 @@ namespace WebApplication.Helpers
         {
             get
             {
-                return new ActiveDirectoryClient(GraphApiEndpoint, async () => await GetAccessTokenAsync());
+                return new ActiveDirectoryClient(this.GraphApiEndpoint, async () => await this.GetAccessTokenAsync());
+            }
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets the graph API endpoint (e.g. https://graph.windows.net/{tenant}/).
+        /// </summary>
+        private Uri GraphApiEndpoint
+        {
+            get
+            {
+                return new Uri(GraphUri, this.tenantId);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the federation sign-on endpoint (e.g. https://graph.windows.net/{tenant}/wsfed/).
+        /// </summary>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", 
+            Justification = "Reviewed. Suppression is OK here.")]
+        private Uri WsFederationSignOn
+        {
+            get
+            {
+                return new Uri(LoginUri, string.Join("/", this.tenantId, "wsfed"));
             }
         }
 
@@ -81,11 +132,12 @@ namespace WebApplication.Helpers
         /// <returns>
         ///     The <see cref="Task" />.
         /// </returns>
-        private static async Task<string> GetAccessTokenAsync()
+        private async Task<string> GetAccessTokenAsync()
         {
-            var context = new AuthenticationContext(WsFederationSignOn.ToString(), false);
+            var context = new AuthenticationContext(this.WsFederationSignOn.ToString(), false);
             AuthenticationResult token =
-                await context.AcquireTokenAsync(GraphUri.ToString(), new ClientCredential(ClientId, ClientSecret));
+                await
+                context.AcquireTokenAsync(GraphUri.ToString(), new ClientCredential(this.clientId, this.clientSecret));
             return token.AccessToken;
         }
 
